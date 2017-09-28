@@ -1,0 +1,19 @@
+.input {
+    font-size: 15px;
+    padding: 5px;
+    outline: none;
+    border: 0;
+
+    &--transparent {
+        background: #0067A3;
+        border-radius: 5px;
+        padding: 10px;
+        flex: 1;
+        
+        &::placeholder {
+            color: #B3CCDB;
+        }
+    }
+
+
+}

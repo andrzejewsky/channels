@@ -1,0 +1,12 @@
+.linkItem {
+    text-decoration: none;
+    color: #333333;
+
+    &--bold {
+        font-weight: 600;
+    }
+
+    &--fullWeight {
+        width: 100%;
+    }
+}

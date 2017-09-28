@@ -1,0 +1,23 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: "Helvetica Neue";
+}
+
+#root {
+    background: #0079BF;
+    height: 100vh;
+}
+
+// components
+
+@import "src/components/Indicator/Indicator";
+@import "src/components/LinkItem/LinkItem";
+@import "src/components/Input/Input";
+@import "src/components/PanelList/PanelList";
+@import "src/components/ScrollingBlock/ScrollingBlock";
+@import "src/components/Chat/Chat";
