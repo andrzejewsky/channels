@@ -1,21 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Indicator from '../components/Indicator';
 
-const handleResponse = (ApolloComponent) => {
-    return class Container extends Component {
+const handleResponse = ApolloComponent => props => {
+  const { data: { loading, error } } = props;
 
-        render() {
+  if (error) {
+    return <p>{error.message}</p>;
+  }
 
-            const { data: { loading, error } } = this.props;
+  return (
+    <Indicator isLoading={loading}>
+      <ApolloComponent {...props} />
+    </Indicator>
+  );
+};
 
-            if (error) {
-                return <p>{error.message}</p>;
-            }
-
-
-            return (<Indicator isLoading={loading}><ApolloComponent {...this.props} /></Indicator>);
-        }
-    }
-}
-
-export { handleResponse };
+export default handleResponse;

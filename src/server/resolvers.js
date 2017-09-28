@@ -1,47 +1,65 @@
-import { PubSub, withFilter } from "graphql-subscriptions";
+import { PubSub, withFilter } from 'graphql-subscriptions';
 
-const channels = [{
+const channels = [
+  {
     id: 1,
     name: 'soccer',
-    messages: [{
+    messages: [
+      {
         id: 1,
         text: 'baseball is life',
-    }]
-}];
+      },
+    ],
+  },
+];
 
 const pubsub = new PubSub();
 
-export const resolvers = {
-    Query: {
-        channels: () => channels,
-        channel: (root, { id }) => channels.find(channel => channel.id == id),
+const resolvers = {
+  Query: {
+    channels: () => channels,
+    channel: (root, { id }) =>
+      channels.find(channel => channel.id === parseInt(id, 10)),
+  },
+  Mutation: {
+    addChannel: (root, args) => {
+      const newChannel = {
+        id: channels.length + 1,
+        name: args.name,
+        messages: [],
+      };
+      channels.push(newChannel);
+
+      return newChannel;
     },
-    Mutation: {
-        addChannel: (root, args) => {
-            const newChannel = { id: channels.length + 1, name: args.name, messages: [] };
-            channels.push(newChannel);
+    addMessage: (root, { message }) => {
+      const channel = channels.find(
+        chan => chan.id === parseInt(message.channelId, 10)
+      );
 
-            return newChannel;
-        },
-        addMessage: (root, { message }) => {
-            const channel = channels.find(channel => channel.id == message.channelId);
+      if (!channel) throw new Error('Channel does not exist');
+      const newMessage = {
+        id: channel.messages.length + 1,
+        text: message.text,
+      };
+      channel.messages.push(newMessage);
 
-            if(!channel)
-                throw new Error("Channel does not exist");
-            const newMessage = { id: channel.messages.length + 1, text: message.text };
-            channel.messages.push(newMessage);
+      pubsub.publish('messageAdded', {
+        messageAdded: newMessage,
+        channelId: message.channelId,
+      });
 
-            pubsub.publish('messageAdded', { messageAdded: newMessage, channelId: message.channelId });
-
-            return newMessage;
-        }
+      return newMessage;
     },
-    Subscription: {
-        messageAdded: {
-            subscribe: withFilter(
-                () => pubsub.asyncIterator('messageAdded'),
-                (payload, variables) => payload.channelId === variables.channelId
-            )
-        }
-    }
+  },
+  Subscription: {
+    messageAdded: {
+      subscribe: withFilter(
+        () => pubsub.asyncIterator('messageAdded'),
+        (payload, variables) => payload.channelId === variables.channelId
+      ),
+    },
+  },
 };
+
+export default resolvers;

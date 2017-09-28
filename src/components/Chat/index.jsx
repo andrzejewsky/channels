@@ -1,5 +1,7 @@
 import React from 'react';
 
-const Chat = ({ children }) => (<div className="chat chat--load">{ children }</div>);
+const Chat = ({ children }) => (
+  <div className="chat chat--load">{children}</div>
+);
 
 export default Chat;

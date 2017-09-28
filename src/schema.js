@@ -1,4 +1,4 @@
-export const typeDefs = `
+const typeDefs = `
 type Channel {
     id: ID!
     name: String
@@ -29,3 +29,5 @@ type Subscription {
     messageAdded(channelId: ID!): Message 
 }
 `;
+
+export default typeDefs;

@@ -1,5 +1,5 @@
 import React from 'react';
 
-const Header = ({ children }) => (<div className="chat__header">{children}</div>);
+const Header = ({ children }) => <div className="chat__header">{children}</div>;
 
 export default Header;
